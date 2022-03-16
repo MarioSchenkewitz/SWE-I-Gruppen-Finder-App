@@ -294,6 +294,15 @@ namespace Speet.Controllers
             return PartialView("~/Views/Shared/_ParticipantsPartial.cshtml", sportGroup);
         }
 
+        public ActionResult GetMapPopupPartial(Guid groupId)
+        {
+            SportGroup sportGroup = _db.SportGroup.Find(groupId);
+            if (sportGroup == null)
+                return Json(new { success = false });
+
+            return PartialView("~/Views/Shared/_MapPopupPartial.cshtml", sportGroup);
+        }
+
         public ActionResult GetConfirmJoinPartial(Guid groupId)
         {
             SportGroup sportGroup = _db.SportGroup.Find(groupId);
@@ -339,7 +348,9 @@ namespace Speet.Controllers
                     MeetupDate = DateTime.Now.AddDays(_rnd.Next(1, 30)),
                     MaxParticipants = _rnd.Next(2, 20),
                     ActivityTags = testActivityTags,
-                    GenderRestrictionTag = _db.GenderRestrictionTag.Find((GenderRestrictionType)_rnd.Next(0, 3))
+                    GenderRestrictionTag = _db.GenderRestrictionTag.Find((GenderRestrictionType)_rnd.Next(0, 3)),
+                    Latitude = 52 + _rnd.NextDouble(),
+                    Longitude = 12 + (2 * _rnd.NextDouble())
                 };
                 testGroup.Participants.Add(testUser);
                 _db.SportGroup.Add(testGroup);
